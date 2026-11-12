@@ -1,5 +1,5 @@
 -- =====================================================================
--- SalaReserva · modelo físico (PostgreSQL 14+)
+-- SalaReserva · (PostgreSQL)
 -- =====================================================================
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
@@ -110,7 +110,7 @@ CREATE UNIQUE INDEX uq_chave_em_uso        ON entrega_chave (numero_chave) WHERE
 -- uma entrega ativa por reserva
 CREATE UNIQUE INDEX uq_entrega_ativa_reserva ON entrega_chave (id_reserva) WHERE status_devolucao <> 'devolucao_confirmada';
 
--- NOVO: transferência de chave entre alunos (QR Code ou e-mail)
+-- transferência de chave entre alunos (QR Code ou e-mail)
 CREATE TABLE transferencia_chave (
   id_transferencia      INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   id_entrega            INT NOT NULL REFERENCES entrega_chave(id_entrega),
@@ -129,7 +129,7 @@ CREATE TABLE transferencia_chave (
 -- só um convite pendente por entrega
 CREATE UNIQUE INDEX uq_transf_pendente ON transferencia_chave (id_entrega) WHERE status = 'pendente';
 
--- NOVO: fotos da sala (abertura e pós-transferência) com aceite da secretaria
+-- fotos da sala (abertura e pós-transferência) com aceite da secretaria
 CREATE TABLE foto_sala (
   id_foto           INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   id_reserva        INT NOT NULL REFERENCES reserva(id_reserva),
